@@ -1,9 +1,15 @@
+// Part 2 is incomplete!
+
 
 fn manhattan(x: i32, y:i32) -> i32 {
     return if x<0 {-x} else {x} + if y<0 {-y} else {y} 
 }
-
 fn find_distance(target: i32) -> i32 {
+    let (x,y) = find_coords(target);
+    manhattan(x,y)
+}
+
+fn find_coords(target: i32) -> (i32,i32) {
     let target = target - 1; // we start from 0-based indexes
 
     // find the "ring number" (the index of a square 
@@ -18,7 +24,7 @@ fn find_distance(target: i32) -> i32 {
     while target > current_corner {
         ring_id+=1;
         current_corner += 8*ring_id;
-        println!("Corner  , {} - {},{}", current_corner, ring_id, ring_id);
+        //println!("Corner  , {} - {},{}", current_corner, ring_id, ring_id);
     }
 
 
@@ -26,26 +32,27 @@ fn find_distance(target: i32) -> i32 {
     let mut current = current_corner;
 
     if target == current_corner {
-        return manhattan(x,y);
+        return (x,y);
     }
+    
     
     // go left
     for _ in 0..(2*ring_id) {
         x-= 1;
         current -=1;
         if current == target{
-            return manhattan(x,y);
+            return (x,y);
         }
-        println!("Left    , {} - {},{}", current, x,y);
+        //println!("Left    , {} - {},{}", current, x,y);
     }
     // jump up left
     for _ in 0..(2*ring_id) {
         y-= 1;
         current -= 1;
         if current == target {
-            return manhattan(x,y);
+            return (x,y);
         }
-        println!("Up      , {} - {},{}", current, x,y);
+        //println!("Up      , {} - {},{}", current, x,y);
     }
 
     // go left
@@ -53,20 +60,20 @@ fn find_distance(target: i32) -> i32 {
         x+= 1;
         current -=1;
         if current == target{
-            return manhattan(x,y);
+            return (x,y);
         }
-        println!("Right   , {} - {},{}", current, x,y);
+        //println!("Right   , {} - {},{}", current, x,y);
     }
     // jump up left
     for _ in 0..(2*ring_id) {
         y+= 1;
         current -= 1;
         if current == target {
-            return manhattan(x,y);
+            return (x,y);
         }
-        println!("Down    , {} - {},{}", current, x,y);
+        //println!("Down    , {} - {},{}", current, x,y);
     }
-    return -1
+    panic!("Bug: reached end of spiral");
 
 }
 
