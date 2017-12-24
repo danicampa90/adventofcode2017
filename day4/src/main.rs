@@ -1,46 +1,45 @@
 extern crate libutils;
 use libutils::*;
-use std::borrow::Borrow;
 use std::collections::HashSet;
 
-fn reverse(s: &str) -> String {
-    s.chars().rev().collect()
+fn sort_chars(s: &str) -> String {
+    let mut v = s.chars().collect::<Vec<char>>();
+    v.sort();
+    v.iter().collect()
 }
 
 
 
-fn process_line(line: &String) -> bool {
+fn process_line(line: &String, allow_reversed:bool) -> bool {
     
     let words: Vec<&str> = line.split_whitespace().collect();
     let mut used = HashSet::new();
 
     for word in &words {
-        let word = String::from(*word);
+        let word = if allow_reversed {String::from(*word)}
+                    else {sort_chars(*word)};
         if used.contains(&word){
-            println!("Invalid : {}", line);
+            //println!("Invalid : {}", line);
             return false;
         } else {
             used.insert(word);
         }
     }
-/*
-    for word in words.into_iter().map(reverse) {
-        let word = String::from(word);
-        if used.contains(&word){
-            println!("Invalid : {}", line);
-            return false;
-        } else {
-            used.insert(word);
-        }
-    }*/
-    println!("Valid   : {}", line);
+    //println!("Valid   : {}", line);
     return true;
 }
 
 fn main() {
     let fname = "input.txt";
     let mut count= 0i32;
-    let result = read_file_foreach_line(&fname, &mut |line: String| {if process_line(&line) {count += 1} Ok(())});
+    let result = read_file_foreach_line(&fname, &mut |line: String| {if process_line(&line, true) {count += 1} Ok(())});
+    match result {
+        Ok(_) => println!("Ok: {}",count ),
+        Err(_) => println!("Error while reading file")
+    }
+
+    let mut count= 0i32;
+    let result = read_file_foreach_line(&fname, &mut |line: String| {if process_line(&line, false) {count += 1} Ok(())});
     match result {
         Ok(_) => println!("Ok: {}",count ),
         Err(_) => println!("Error while reading file")
@@ -52,21 +51,25 @@ mod tests {
     #[test(normal)]
     fn test_1() {
         let s = String::from("aa bb cc dd ee");
-        assert!(process_line(&s));
+        assert!(process_line(&s, true));
+        assert!(process_line(&s, false));
     }
     #[test(duplicate)]
     fn test_2() {
         let s = String::from("aa bb cc dd aa");
-        assert!(!process_line(&s));
+        assert!(!process_line(&s, true));
+        assert!(!process_line(&s, false));
     }
     #[test(substring)]
     fn test_3() {
         let s = String::from("aa bb cc dd aaa");
-        assert!(process_line(&s));
+        assert!(process_line(&s, true));
+        assert!(process_line(&s, false));
     }
-    #[test(palindromes)]
-    fn test_4_palindromes() {
+    #[test(anagrams)]
+    fn test_4_anagrams() {
         let s = String::from("ab bb cc dd ba");
-        assert!(process_line(&s));
+        assert!(process_line(&s, true));
+        assert!(!process_line(&s, false));
     }
 }
