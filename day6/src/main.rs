@@ -1,5 +1,5 @@
 
-use std::collections::HashSet;
+use std::collections::HashMap;
 
 fn get_candidate_index<T>(input: &Vec<T>) -> Option<usize>
     where T : Ord
@@ -56,20 +56,19 @@ fn print_state(stepid:i32, state: &Vec<i32>) {
     println!();
 }
 
-fn find_loop_in_states(vec: Vec<i32>) -> i32 {
-    let mut states = HashSet::new();
+fn find_loop_in_states(vec: Vec<i32>) -> (i32, i32) {
+    let mut states = HashMap::new();
     let mut current_state = vec;
     let mut counter = 0;
     loop {
         print_state(counter, &current_state);
 
-        if states.contains(&current_state){
-            return counter;
+        if let Some(loop_start) = states.get(&current_state) {
+            return (counter, counter - loop_start);
         }
-        states.insert(current_state.clone());
+        states.insert(current_state.clone(), counter);
         redistribute_elements(&mut current_state).unwrap();
         counter += 1;
-
     }
 
 }
@@ -77,13 +76,35 @@ fn find_loop_in_states(vec: Vec<i32>) -> i32 {
 
 fn main(){
     let mut input = vec!(2,8,8,5,4,2,3,1,5,5,1,2,15,13,5,14);
-    //let input = vec!(0,2,7,0);
     
     let idx = get_candidate_index(&input);
     println!("index {}, which is element {}", idx.unwrap(), input[idx.unwrap()] );
     //print_state(0, &input);
 
-    let result = find_loop_in_states(input);
-    println!("The result is {}", result);
+    let (steps, loop_size) = find_loop_in_states(input);
+    println!("The result is {} and a loop of size {}", steps, loop_size);
     
+}
+
+#[cfg(test)]
+mod tests {
+    use find_loop_in_states;
+    use get_candidate_index;
+    #[test]
+    fn test_example() {
+        let input = vec!(0,2,7,0);
+        let (steps, loop_size) = find_loop_in_states(input);
+        assert_eq!(steps, 5);
+        assert_eq!(loop_size, 4);
+    }
+
+    #[test]
+    fn test_get_candidate() {
+        let input = vec!(0,2,7,0);
+        let idx = get_candidate_index(&input);
+        assert_eq!(idx, Some(2));
+        let input : Vec<i32> = vec!();
+        let idx = get_candidate_index(&input);
+        assert_eq!(idx, None);
+    }
 }
