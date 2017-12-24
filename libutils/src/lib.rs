@@ -22,6 +22,7 @@ pub fn read_file_to_str(fname: &str) -> Result<String, std::io::Error> {
     return Ok(s)
 }
 
+#[derive(Debug)]
 pub enum FileProcessingErr<E>{
     IoError(std::io::Error),
     ProcessingError(E)
