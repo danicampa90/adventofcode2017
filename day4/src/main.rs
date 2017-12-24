@@ -1,5 +1,7 @@
 extern crate libutils;
 use libutils::*;
+use libutils::FileProcessingErr::IoError;
+use libutils::FileProcessingErr::ProcessingError;
 use std::collections::HashSet;
 
 fn sort_chars(s: &str) -> String {
@@ -32,17 +34,19 @@ fn process_line(line: &String, allow_reversed:bool) -> bool {
 fn main() {
     let fname = "input.txt";
     let mut count= 0i32;
-    let result = read_file_foreach_line(&fname, &mut |line: String| {if process_line(&line, true) {count += 1} Ok(())});
+    let result : Result<(), FileProcessingErr<()>> = read_file_foreach_line(&fname, &mut |line: String| {if process_line(&line, true) {count += 1} Ok(())});
     match result {
         Ok(_) => println!("Ok: {}",count ),
-        Err(_) => println!("Error while reading file")
+        Err(IoError(_)) => println!("Error while reading file"),
+        Err(ProcessingError(_)) => println!("Error while processing file")
     }
 
     let mut count= 0i32;
-    let result = read_file_foreach_line(&fname, &mut |line: String| {if process_line(&line, false) {count += 1} Ok(())});
+    let result : Result<(), FileProcessingErr<()>> = read_file_foreach_line(&fname, &mut |line: String| {if process_line(&line, false) {count += 1} Ok(())});
     match result {
         Ok(_) => println!("Ok: {}",count ),
-        Err(_) => println!("Error while reading file")
+        Err(IoError(_)) => println!("Error while reading file"),
+        Err(ProcessingError(_)) => println!("Error while processing file")
     }
 }
 #[cfg(test)]

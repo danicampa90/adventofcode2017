@@ -22,15 +22,29 @@ pub fn read_file_to_str(fname: &str) -> Result<String, std::io::Error> {
     return Ok(s)
 }
 
+pub enum FileProcessingErr<E>{
+    IoError(std::io::Error),
+    ProcessingError(E)
+}
 
-pub fn read_file_foreach_line<F>(fname: &str, action: &mut F) -> Result<(), std::io::Error>
-    where F: FnMut(String)-> Result<(),std::io::Error> 
+impl<E> std::convert::From<std::io::Error> for FileProcessingErr<E> {
+    fn from(err: std::io::Error) -> Self {
+        FileProcessingErr::IoError(err)
+    }
+}
+
+pub fn read_file_foreach_line<F, E>(fname: &str, action: &mut F) -> Result<(), FileProcessingErr<E>>
+    where F: FnMut(String)-> Result<(), E> 
 {
     let f = try!(File::open(fname));
     let file = BufReader::new(&f);
     for line in file.lines() {
         let l = line.unwrap();
-        action(l)?;
+        if let Err(res) = action(l)
+        {
+            return Err(FileProcessingErr::ProcessingError::<E>(res));
+        }
+        
     }
     Ok(())
 }
