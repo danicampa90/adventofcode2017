@@ -30,8 +30,8 @@ pub enum Operation {
 impl Display for Operation {
     fn fmt(&self, fmt: &mut Formatter) -> Result<(), Error> {
         match self {
-            Inc => write!(fmt, "inc"),
-            Dec => write!(fmt, "dec"),
+            &Operation::Inc => write!(fmt, "inc"),
+            &Operation::Dec => write!(fmt, "dec"),
         }
     }
 }
@@ -47,12 +47,12 @@ pub enum Condition {
 impl Display for Condition {
     fn fmt(&self, fmt: &mut Formatter) -> Result<(), Error> {
         write!(fmt, "{}", match self {
-            GT=> ">",
-            GE=> ">=", 
-            EQ=> "==",
-            NE=> "!=",
-            LE=> "<=",
-            LT=> "<",
+            &Condition::GT=> ">",
+            &Condition::GE=> ">=", 
+            &Condition::EQ=> "==",
+            &Condition::NE=> "!=",
+            &Condition::LE=> "<=",
+            &Condition::LT=> "<",
         });
         Ok(())
     }

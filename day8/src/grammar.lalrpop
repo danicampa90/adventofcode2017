@@ -28,7 +28,7 @@ CondOp: Condition = {
     ">" => Condition::GT,
     ">=" => Condition::GE,
     "==" => Condition::EQ,
-    "!=" => Condition::EQ,
+    "!=" => Condition::NE,
     "<=" => Condition::LE,
     "<" => Condition::LT,
 };

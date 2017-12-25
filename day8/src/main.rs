@@ -37,19 +37,19 @@ impl State {
 }
 
 fn eval_cond_op(value1: i32, op: Condition, value2: i32) -> bool {
-    match(op) {
+    match op {
         Condition::GT => value1 > value2,
         Condition::GE => value1 >= value2,
         Condition::EQ => value1 == value2,
         Condition::NE => value1 != value2,
-        Condition::LT => value1 < value2,
         Condition::LE => value1 <= value2,
+        Condition::LT => value1 < value2,
     }
 }
 
 fn execute_action(state: &mut State, register: String, op: Operation, value: i32) {
     let old_value = state.get_value(&register);
-    let to_add = match(op) {
+    let to_add = match op {
         Operation::Inc => value,
         Operation::Dec => -value
     };
