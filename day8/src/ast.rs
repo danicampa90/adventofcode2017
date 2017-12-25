@@ -15,8 +15,7 @@ pub struct Instruction {
 impl Display for Instruction {
     fn fmt(&self, fmt: &mut Formatter) -> Result<(), Error> {
         write!(fmt, "Instruction ({} {} {}) if ({} {} {})",
-        self.target_reg, self.target_op, self.target_value, self.cond_left, self.cond_op, self.cond_right);
-        Ok(())
+        self.target_reg, self.target_op, self.target_value, self.cond_left, self.cond_op, self.cond_right)
     }
 }
 
@@ -53,7 +52,6 @@ impl Display for Condition {
             &Condition::NE=> "!=",
             &Condition::LE=> "<=",
             &Condition::LT=> "<",
-        });
-        Ok(())
+        })
     }
 }

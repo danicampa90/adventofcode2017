@@ -1,7 +1,6 @@
 extern crate lalrpop_util;
 extern crate libutils;
 
-use lalrpop_util::ParseError;
 use std::collections::HashMap;
 
 mod grammar;
@@ -12,12 +11,13 @@ use ast::Condition;
 
 
 struct State {
-    registers: HashMap<String, i32>
+    registers: HashMap<String, i32>,
+    max_value: i32
 }
 
 impl State {
     fn new() -> State{
-        State{registers: HashMap::new()}
+        State{registers: HashMap::new(), max_value: -99999999}
     }
     fn get_value(&mut self, name: &String) -> i32 {
         match self.registers.get(name) {
@@ -27,7 +27,11 @@ impl State {
     }
     fn set_value(&mut self, name: String, val:i32) {
         self.registers.insert(name, val);
+        if self.max_value < val {
+            self.max_value = val;
+        }
     }
+    fn get_max(&self) -> i32 { self.max_value }
     fn dump(&self) {
         for (key,val) in self.registers.iter() {
             println!(" - {} = {}", key, val);
@@ -63,7 +67,7 @@ fn execute (state: &mut State, instr: Option<Instruction>) -> Result<(), String>
     let instr = instr.unwrap();
 
     let value = state.get_value(&instr.cond_left);
-    if(eval_cond_op(value, instr.cond_op, instr.cond_right)) {
+    if eval_cond_op(value, instr.cond_op, instr.cond_right) {
         // it's true! execute action
         execute_action(state, instr.target_reg, instr.target_op, instr.target_value);
     } else {
@@ -84,10 +88,11 @@ fn main() {
     let mut state = State::new();
     libutils::read_file_foreach_line(fname,  
         &mut |line: String| execute(&mut state, parse(&line))
-    );
+    ).unwrap();
 
     state.dump();
 
+    println!("Max value {}", state.get_max());
 /*
     let parsed = grammar::parse_Instr("bxa inc 123 if aaa > -1213");
     match parsed {
