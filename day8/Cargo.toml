@@ -1,0 +1,13 @@
+[package]
+name = "day8"
+version = "0.1.0"
+authors = ["dani campa <danicampa90@gmail.com>"]
+build = "build.rs" # For lalrpop
+
+[build-dependencies]
+lalrpop = "0.13.1"
+
+[dependencies]
+libutils = { path="../libutils" }
+lalrpop-util = "0.13.1"
+regex = "0.2.1"

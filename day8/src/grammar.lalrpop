@@ -1,0 +1,38 @@
+use std::str::FromStr;
+use std::string::String;
+use ast::Instruction;
+use ast::Operation;
+use ast::Condition;
+// https://github.com/nikomatsakis/lalrpop/blob/master/doc/tutorial.md
+
+grammar;
+
+
+
+
+pub Instr: Instruction = {
+    <trg_reg: Id> <trg_op: Op> <trg_value:Num> "if" <cond_left: Id> <cond_op: CondOp> <cond_right:Num>
+       => Instruction{ target_reg: trg_reg,
+                       target_op: trg_op, 
+                       target_value: trg_value,
+                       cond_left : cond_left,
+                       cond_op : cond_op,
+                       cond_right : cond_right }
+};
+
+Op: Operation = {
+    "inc" => Operation::Inc,
+    "dec" => Operation::Dec,
+};
+CondOp: Condition = {
+    ">" => Condition::GT,
+    ">=" => Condition::GE,
+    "==" => Condition::EQ,
+    "!=" => Condition::EQ,
+    "<=" => Condition::LE,
+    "<" => Condition::LT,
+};
+
+NewLine = "\n";
+Id : String = <s:r#"[a-zA-Z]+"#> => String::from(s);
+Num: i32 = <s:r"-?[0-9]+"> => i32::from_str(s).unwrap();
