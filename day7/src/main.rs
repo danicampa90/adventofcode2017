@@ -30,7 +30,10 @@ fn parse_line(graph: &mut ProgramGraph, line: &String) -> Result<(), FileProcess
         for &word in &line[3..] {
             let word = String::from(
                 if word.ends_with(',') {
-                    &word[0..word.len()-1] } else {word});
+                    &word[0..word.len()-1]
+                } else {
+                    word
+                });
             print!("{} ", word);
 
             let child_node = graph.get_tree_ref(&word).clone();
@@ -54,6 +57,9 @@ fn main () {
 
     
     let rootnode = graph.get_root_cached().unwrap();
-    println!("{}", rootnode.as_ref().borrow().name);
+    println!("Root is {}", rootnode.as_ref().borrow().name);
+    let new_graph = graph.build_tree_with_summed_weight();
+    new_graph.dump();
+    new_graph.find_anomaly();
 
 }
