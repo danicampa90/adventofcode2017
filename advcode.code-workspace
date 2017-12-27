@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "libutils"
+		},
+		{
+			"path": "day7"
+		},
+		{
+			"path": "day8"
+		},
+		{
+			"path": "day9"
+		},
+		{
+			"path": "day10"
+		}
+	],
+	"settings": {}
+}
