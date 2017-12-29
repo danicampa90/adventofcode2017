@@ -50,6 +50,16 @@ pub fn walk_hex(start: Position, directions: &[Movement]) -> Position {
     }
     pos
 }
+pub fn walk_hex_max_distance(start: Position, directions: &[Movement]) -> i32 {
+    let mut pos = start;
+    let mut max_distance = 0;
+    for dir in directions {
+        pos = move_hex(pos, *dir);
+        let distance = get_path(pos);
+        if distance > max_distance { max_distance = distance; }
+    }
+    max_distance
+}
 
 
 pub fn get_path(mut pos: Position) -> i32 {
@@ -60,7 +70,7 @@ pub fn get_path(mut pos: Position) -> i32 {
             break;
         }
         let (movement, count) = decision.unwrap();
-        println!("From {:?} move {:?} {} times", pos, movement, count);
+        //println!("From {:?} move {:?} {} times", pos, movement, count);
         total_count += count;
         for _repetiton in 0..count {
             pos = move_hex(pos, movement);

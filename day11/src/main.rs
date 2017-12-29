@@ -4,6 +4,7 @@ use libutils::read_file_to_str;
 mod hexmovements;
 
 use hexmovements::walk_hex;
+use hexmovements::walk_hex_max_distance;
 use hexmovements::get_path;
 use hexmovements::Position;
 use hexmovements::Movement;
@@ -30,6 +31,10 @@ fn parse_directions(line: &str) -> Vec<Movement> {
     println!("Final position: {:?}", end_pos);
     let distance = get_path(end_pos);
     println!("Distance: {}", distance);
+
+    let max_distance = walk_hex_max_distance(Position::origin(), movs.as_slice());
+    println!("Max distance: {}", max_distance);
+
     return movs;
 
 }
