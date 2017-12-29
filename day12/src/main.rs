@@ -44,10 +44,10 @@ fn load_line(line: &str, data: &mut Graph) -> Result<(), ParsingError>{
     Ok(())
 }
 
-fn reachability(graph:&Graph) -> Vec<usize> {
+fn reachability(from:usize, graph:&Graph) -> Vec<usize> {
     let mut visited : HashSet<usize> = HashSet::new();
     let mut queue : HashSet<usize> = HashSet::new();
-    queue.insert(0);
+    queue.insert(from);
     while !queue.is_empty() {
         let item : usize = *queue.iter().next().unwrap();
         queue.remove(&item);
@@ -62,8 +62,12 @@ fn reachability(graph:&Graph) -> Vec<usize> {
 fn main() {
     let fname = "input.txt";
     let mut graph : Graph = vec!();
-    graph.resize(2000, vec!());
+    graph.resize(2000, vec!()); // prepare 2000 elements for the input problem
+
+    // load data
     read_file_foreach_line(fname, &mut |line| { load_line(line.as_ref(), &mut graph) } ).unwrap();
+    
+    /* debug print
     for (neighbors, index) in (&graph).into_iter().zip(0..) {
         print!("Index {} has these neighbors ", index);
         for n in neighbors {
@@ -71,9 +75,22 @@ fn main() {
         }
         println!();
     }
+    */
 
-    let count = reachability(&graph).len();
-    println!("Reachable states: {}",count);
+    let mut found_items: HashSet<usize> = HashSet::new();
+    let mut groups = 0;
+    for i in 0..2000 {
+        if !found_items.contains(&i) {
+            let reachable_states = reachability(i, &graph);
+            println!("Reachable states from {} : {:?}",i, &reachable_states);
+            println!("                    Size : {}", reachable_states.len());
+            found_items.extend(reachable_states);
+            groups+= 1;
+        }
+    }
+    println!("there are {} groups", groups);
+
+
 
 
 }
