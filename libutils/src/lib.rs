@@ -5,6 +5,9 @@ use std::path::Path;
 use std::io::BufReader;
 use std::io::BufRead;
 
+pub mod modulo_ops;
+
+
 #[cfg(test)]
 mod tests {
     #[test]
