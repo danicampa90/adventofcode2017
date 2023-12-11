@@ -25,6 +25,7 @@ fn expand_bits(number: u8) -> [bool; 8] {
     number & 128 != 0]
 }
 
+
 fn main() {
     let key = "flqrgnkx";
     let mut count = 0;
