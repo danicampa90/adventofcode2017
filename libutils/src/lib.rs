@@ -40,7 +40,7 @@ impl<E> std::convert::From<std::io::Error> for FileProcessingErr<E> {
 pub fn read_file_foreach_line<F, E>(fname: &str, action: &mut F) -> Result<(), FileProcessingErr<E>>
     where F: FnMut(String)-> Result<(), E> 
 {
-    let f = r#try!(File::open(fname));
+    let f = File::open(fname)?;
     let file = BufReader::new(&f);
     for line in file.lines() {
         let l = line.unwrap();

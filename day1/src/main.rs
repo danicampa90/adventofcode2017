@@ -27,14 +27,13 @@ fn dupsum_str_mid(s : &String) -> i32{
 }
 
 
-fn dupsum_iterator(c1: &mut Iterator<Item=char>, c2: &mut Iterator<Item=char>) -> i32 {
+fn dupsum_iterator(c1: &mut dyn Iterator<Item=char>, c2: &mut dyn Iterator<Item=char>) -> i32 {
     let mut result = 0i32;
     for c in c1 {
         if c == c2.next().unwrap_or('-') {
             result += c.to_digit(10).unwrap_or(0) as i32;
         }
     }
-
 
     return result;
 }
@@ -43,16 +42,19 @@ fn dupsum_iterator(c1: &mut Iterator<Item=char>, c2: &mut Iterator<Item=char>) -
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
     fn test_1111 () {
         let s = String::from("1111");
         assert_eq!(dupsum_str(&s), 4)
     }
 
+    #[test]
     fn test_1234 () {
         let s = String::from("1234");
         assert_eq!(dupsum_str(&s), 0)
     }
 
+    #[test]
     fn test_1122 () {
         let s = String::from("1122");
         assert_eq!(dupsum_str(&s), 3)

@@ -59,7 +59,7 @@ fn parse_group(content: &str) -> (usize, ParsedStructRef) {
                 iterator = content[count..].chars(); // iterator
                 beginning = false;
             }
-            Some(_) => panic!("Unexpected token in group. Was expecting , or {."),
+            Some(_) => panic!("{}", "Unexpected token in group. Was expecting , or {."),
             None => panic!("EOF while parsing group!")
         }
     }

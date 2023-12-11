@@ -75,7 +75,7 @@ fn find_loop_in_states(vec: Vec<i32>) -> (i32, i32) {
 
 
 fn main(){
-    let mut input = vec!(2,8,8,5,4,2,3,1,5,5,1,2,15,13,5,14);
+    let input = vec!(2,8,8,5,4,2,3,1,5,5,1,2,15,13,5,14);
     
     let idx = get_candidate_index(&input);
     println!("index {}, which is element {}", idx.unwrap(), input[idx.unwrap()] );

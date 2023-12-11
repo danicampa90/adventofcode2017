@@ -24,10 +24,6 @@ impl Position{
     pub fn new(x: i32, y:i32) -> Position {
         Position{x:x, y:y}
     }
-
-    pub fn dist_squared(x: i32, y:i32) -> i32 {
-        return x*x + y*y;
-    }
 }
 
 fn move_hex(p:Position, m: Movement) -> Position {
