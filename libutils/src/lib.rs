@@ -6,15 +6,8 @@ use std::io::BufReader;
 use std::io::BufRead;
 
 pub mod modulo_ops;
-
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
+pub mod knot_hash;
+pub mod map2d;
 
 pub fn read_file_to_str(fname: &str) -> Result<String, std::io::Error> {
     println!("Loading {0}", fname);

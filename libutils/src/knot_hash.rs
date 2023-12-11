@@ -1,5 +1,5 @@
 
-use libutils::modulo_ops::WrappingTape;
+use crate::modulo_ops::WrappingTape;
 
 
 pub fn knot_hash(input: &[u8]) -> [u8; 16] {
@@ -10,6 +10,13 @@ pub fn knot_hash(input: &[u8]) -> [u8; 16] {
     let sparse_hash = tape.as_vec().as_slice();
     let dense_hash = calculate_dense_hash(sparse_hash);
     return dense_hash.unwrap();
+}
+
+
+pub fn basic_knot_hash(input: &[u8]) -> Vec<u8> {
+    let tape = knot_hash_round(256, input, 1);
+    return tape.into_vec();
+
 }
 
 fn knot_hash_round(size: usize, input : &[u8], rounds : i32) -> WrappingTape<u8> {
@@ -56,6 +63,17 @@ fn calculate_dense_hash(sparse_hash: &[u8]) -> Result<[u8; 16], &'static str>  {
     Ok(dense_hash)
 }
 
+
+pub fn knot_hash_to_str(input:[u8;16]) -> String {
+    let mut result = String::new();
+    for byte in input.iter() {
+        if *byte < 0x10 {
+            result.push('0'); // hack 
+        }
+        result.push_str(&format!("{:x}", byte));
+    }
+    return result;
+}
 
 
 #[cfg(test)] 

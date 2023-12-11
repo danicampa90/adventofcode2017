@@ -51,6 +51,10 @@ impl<T> WrappingTape<T>  where T: Copy {
     pub fn as_vec(&self) -> &Vec<T> {
         return &self.data;
     }
+
+    pub fn into_vec(self) -> Vec<T>{
+        return self.data;
+    }
     
     
     pub fn reverse_slice(&mut self, length: i32) -> Result<(), TapeError> {
