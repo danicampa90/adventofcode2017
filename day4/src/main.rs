@@ -52,26 +52,26 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::process_line;
-    #[test(normal)]
-    fn test_1() {
+    #[test]
+    fn test_normal() {
         let s = String::from("aa bb cc dd ee");
         assert!(process_line(&s, true));
         assert!(process_line(&s, false));
     }
-    #[test(duplicate)]
-    fn test_2() {
+    #[test]
+    fn test_duplicate() {
         let s = String::from("aa bb cc dd aa");
         assert!(!process_line(&s, true));
         assert!(!process_line(&s, false));
     }
-    #[test(substring)]
-    fn test_3() {
+    #[test]
+    fn test_substring() {
         let s = String::from("aa bb cc dd aaa");
         assert!(process_line(&s, true));
         assert!(process_line(&s, false));
     }
-    #[test(anagrams)]
-    fn test_4_anagrams() {
+    #[test]
+    fn test_anagrams() {
         let s = String::from("ab bb cc dd ba");
         assert!(process_line(&s, true));
         assert!(!process_line(&s, false));

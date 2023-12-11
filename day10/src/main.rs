@@ -1,7 +1,7 @@
 extern crate libutils;
 mod knot_hash;
 
-use knot_hash::knot_hash;
+use crate::knot_hash::knot_hash;
 
 
 fn ascii_to_u8 (input : &str) -> &[u8] {

@@ -130,22 +130,22 @@ fn main() {
 mod tests {
     use super::find_distance;
 
-    #[test(t1)]
+    #[test]
     fn test_1() {
         assert_eq!(find_distance(1), 0);
     }
 
-    #[test(t12)]
+    #[test]
     fn test_12() {
         assert_eq!(find_distance(12), 3);
     }
 
-    #[test(t23)]
+    #[test]
     fn test_23() {
         assert_eq!(find_distance(23), 2);
     }
 
-    #[test(t1024)]
+    #[test]
     fn test_1024() {
         assert_eq!(find_distance(1024), 31);
     }

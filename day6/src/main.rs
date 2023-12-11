@@ -88,8 +88,8 @@ fn main(){
 
 #[cfg(test)]
 mod tests {
-    use find_loop_in_states;
-    use get_candidate_index;
+    use crate::find_loop_in_states;
+    use crate::get_candidate_index;
     #[test]
     fn test_example() {
         let input = vec!(0,2,7,0);

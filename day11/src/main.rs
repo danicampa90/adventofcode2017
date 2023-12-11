@@ -3,11 +3,11 @@ use libutils::read_file_to_str;
 
 mod hexmovements;
 
-use hexmovements::walk_hex;
-use hexmovements::walk_hex_max_distance;
-use hexmovements::get_path;
-use hexmovements::Position;
-use hexmovements::Movement;
+use crate::hexmovements::walk_hex;
+use crate::hexmovements::walk_hex_max_distance;
+use crate::hexmovements::get_path;
+use crate::hexmovements::Position;
+use crate::hexmovements::Movement;
 
 
 fn parse_direction(mov_direction: &str) -> Result<Movement,()> {

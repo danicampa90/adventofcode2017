@@ -5,9 +5,9 @@ use std::collections::HashMap;
 
 mod grammar;
 mod ast;
-use ast::Instruction;
-use ast::Operation;
-use ast::Condition;
+use crate::ast::Instruction;
+use crate::ast::Operation;
+use crate::ast::Condition;
 
 
 struct State {

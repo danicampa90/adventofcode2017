@@ -76,8 +76,8 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use execute_program_count_steps_inc;
-    use execute_program_count_steps_incdec;
+    use crate::execute_program_count_steps_inc;
+    use crate::execute_program_count_steps_incdec;
 
     #[test]
     fn test_example_step1() {

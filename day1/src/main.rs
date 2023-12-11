@@ -43,20 +43,17 @@ fn dupsum_iterator(c1: &mut Iterator<Item=char>, c2: &mut Iterator<Item=char>) -
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test(name="Example 1111")]
-    fn test_1 () {
+    fn test_1111 () {
         let s = String::from("1111");
         assert_eq!(dupsum_str(&s), 4)
     }
 
-    #[test(name="Example 1234")]
-    fn test_2 () {
+    fn test_1234 () {
         let s = String::from("1234");
         assert_eq!(dupsum_str(&s), 0)
     }
 
-    #[test(name="Example 1122")]
-    fn test_3 () {
+    fn test_1122 () {
         let s = String::from("1122");
         assert_eq!(dupsum_str(&s), 3)
     }

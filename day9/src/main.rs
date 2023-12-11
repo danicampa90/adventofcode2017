@@ -162,8 +162,8 @@ fn main() {
 
 #[cfg(test)]
 mod test{
-    use get_score;
-    use get_garbage_count;
+    use crate::get_score;
+    use crate::get_garbage_count;
 
     #[test]
     fn test_groups1() {

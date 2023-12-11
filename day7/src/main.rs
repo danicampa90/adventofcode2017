@@ -4,7 +4,7 @@ use libutils::FileProcessingErr;
 use libutils::FileProcessingErr::ProcessingError;
 
 mod graph;
-use graph::*;
+use crate::graph::*;
 
 
 fn parse_line(graph: &mut ProgramGraph, line: &String) -> Result<(), FileProcessingErr<String>> {
