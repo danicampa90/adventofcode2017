@@ -3,11 +3,13 @@ extern crate libutils;
 
 use std::collections::HashMap;
 
-mod grammar;
 mod ast;
 use crate::ast::Instruction;
 use crate::ast::Operation;
 use crate::ast::Condition;
+use lalrpop_util::lalrpop_mod;
+
+lalrpop_mod!(pub grammar); 
 
 
 struct State {
@@ -77,7 +79,7 @@ fn execute (state: &mut State, instr: Option<Instruction>) -> Result<(), String>
 }
 
 fn parse(line: &String) -> Option<Instruction> {
-    match grammar::parse_Instr(line) {
+    match grammar::InstrParser::new().parse(line) {
         Ok(i) => Some(i),
         Err(_) => { println!("Cannot parse {}", line); None }
     }

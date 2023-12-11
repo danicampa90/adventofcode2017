@@ -3,11 +3,8 @@ use std::string::String;
 use ast::Instruction;
 use ast::Operation;
 use ast::Condition;
-// https://github.com/nikomatsakis/lalrpop/blob/master/doc/tutorial.md
 
 grammar;
-
-
 
 
 pub Instr: Instruction = {
