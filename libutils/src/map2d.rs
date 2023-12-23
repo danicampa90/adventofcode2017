@@ -65,6 +65,16 @@ impl<T> Map2D<T> where T:Copy{
         self.data[idx] = value;
     }
 
+    pub fn fold<F>(&self, initial:F, fold_func: fn(F, &T, i32, i32)-> F) -> F {
+        let mut value = initial;
+        for x in 0..self.size_x as i32 {
+            for y in 0..self.size_y() as i32 {
+                value = fold_func(value, &self.get_value(x, y), x, y);
+            }
+        }
+        return value;
+    }
+
     pub fn regions_with_filter(&self, filter: fn(&T)->bool, connected_to: fn(&T,&T)->bool) -> Map2D<i32> where T:PartialEq {
         let mut result = Map2D::new(-1, self.size_x);
         result.data.resize(self.size_y()*self.size_x(), -1);
