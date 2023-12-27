@@ -8,6 +8,7 @@ use std::io::BufRead;
 pub mod modulo_ops;
 pub mod knot_hash;
 pub mod map2d;
+pub mod peekable_string;
 
 pub fn read_file_to_str(fname: &str) -> Result<String, std::io::Error> {
     println!("Loading {0}", fname);
