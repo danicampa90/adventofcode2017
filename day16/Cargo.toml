@@ -2,6 +2,7 @@
 name = "day16"
 version = "0.1.0"
 authors = ["dani campa <danicampa90@gmail.com>"]
+edition = "2021"
 
 [dependencies]
 libutils = { path="../libutils" }

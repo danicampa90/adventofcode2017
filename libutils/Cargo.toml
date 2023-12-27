@@ -2,5 +2,6 @@
 name = "libutils"
 version = "0.1.0"
 authors = ["dani campa <danicampa90@gmail.com>"]
+edition = "2021"
 
 [dependencies]

@@ -107,7 +107,7 @@ impl<T> Map2D<T> where T:Copy{
             for (nx, ny) in directions {
                 let neighbor_value = self.get_value(nx, ny);
                 let neighbor_group = result.get_value(nx, ny);
-                if filter(&neighbor_value) {
+                if filter(&neighbor_value) && connected_to(&value_current, &neighbor_value){
                     if neighbor_group < 0 {
                         todo_list.push((nx,ny))
                     } else {

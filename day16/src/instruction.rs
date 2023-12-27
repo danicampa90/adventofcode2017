@@ -4,18 +4,21 @@ use libutils::peekable_string::PeekableString;
 
 use crate::{Program, program::ProgramFromStrErr};
 
+#[derive(PartialEq, Eq, Debug)]
 pub enum Instruction {
     Spin(i32),
     Exchange(i32, i32),
     Partner(Program, Program)
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub enum InstructionFromStrErr {
     EmptyInstructionError,
     InvalidInstructionError,
     ProgramParseError(ProgramFromStrErr),
     NumberParseError,
-    UnexpectedTokenError(char)
+    UnexpectedTokenError(char),
+    EofError
     
 }
 
@@ -57,6 +60,7 @@ impl Instruction {
 
         let ch1 = str.pop()
             .ok_or(InstructionFromStrErr::ProgramParseError(ProgramFromStrErr::NotASingleChar))?;
+        Instruction::parse_separator(str)?;
         let ch2 = str.pop()
             .ok_or(InstructionFromStrErr::ProgramParseError(ProgramFromStrErr::NotASingleChar))?;
 
@@ -74,18 +78,68 @@ impl Instruction {
             if !ch.is_numeric() {
                 break;
             }
-            s.push(str.pop());
+            s.push(str.pop().unwrap());
         }
         return i32::from_str(&s).map_err(|_|InstructionFromStrErr::NumberParseError);
     }
 
     fn parse_separator(str: &mut PeekableString) -> Result<(), InstructionFromStrErr> {
-        if str.peek() == Some('/') {
-            return Ok(())
+        return if str.peek() == Some('/') {
+            str.pop();
+            Ok(())
         } else {
-            return Err(InstructionFromStrErr::UnexpectedTokenError(str.pop()))
+            match str.pop() {
+                Some(ch) => Err(InstructionFromStrErr::UnexpectedTokenError(ch)),
+                None => Err(InstructionFromStrErr::EofError)
+            }
         }
     }
-
 }
 
+#[cfg(test)]
+mod tests{
+    use std::str::FromStr;
+
+    use crate::{instruction::{Instruction, InstructionFromStrErr}, program::{Program, ProgramFromStrErr}};
+
+
+    #[test]
+    pub fn test_parse_spin() {
+
+
+        assert_eq!(Ok(Instruction::Spin(1)), Instruction::from_str("s1"));
+        assert_eq!(Ok(Instruction::Spin(11)), Instruction::from_str("s11"));
+
+        assert_eq!(Ok(Instruction::Spin(1)), Instruction::from_str("s1,"));
+        assert_eq!(Ok(Instruction::Spin(13)), Instruction::from_str("s13,"));
+
+        assert_eq!(Err(InstructionFromStrErr::NumberParseError), Instruction::from_str("s"));
+    }
+
+    #[test]
+    pub fn test_parse_exchange() {
+        assert_eq!(Ok(Instruction::Exchange(1,2)), Instruction::from_str("x1/2"));
+        assert_eq!(Ok(Instruction::Exchange(1,22)), Instruction::from_str("x1/22"));
+        assert_eq!(Ok(Instruction::Exchange(11,2)), Instruction::from_str("x11/2"));
+        assert_eq!(Ok(Instruction::Exchange(11,12)), Instruction::from_str("x11/12"));
+
+        assert_eq!(Ok(Instruction::Exchange(1,22)), Instruction::from_str("x1/22,"));
+
+        assert_eq!(Err(InstructionFromStrErr::NumberParseError), Instruction::from_str("x1/"));
+        assert_eq!(Err(InstructionFromStrErr::EofError), Instruction::from_str("x1"));
+        assert_eq!(Err(InstructionFromStrErr::NumberParseError), Instruction::from_str("x"));
+    }
+    
+    #[test]
+    pub fn test_parse_partner() {
+        assert_eq!(Ok(Instruction::Partner(Program::new('a').unwrap(), Program::new('b').unwrap())),
+        Instruction::from_str("pa/b"));
+        assert_eq!(Err(InstructionFromStrErr::ProgramParseError(ProgramFromStrErr::InvalidChar)),
+        Instruction::from_str("pa/z"));
+        assert_eq!(Err(InstructionFromStrErr::ProgramParseError(ProgramFromStrErr::NotASingleChar)),
+        Instruction::from_str("pa/"));
+        assert_eq!(Err(InstructionFromStrErr::EofError), Instruction::from_str("pa"));
+        assert_eq!(Err(InstructionFromStrErr::ProgramParseError(ProgramFromStrErr::NotASingleChar)),
+        Instruction::from_str("p"));
+    }
+}
