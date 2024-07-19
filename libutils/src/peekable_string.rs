@@ -25,3 +25,15 @@ impl PeekableString {
         PeekableString{chars: str.chars().collect()}
     }
 }
+
+impl From<&str> for PeekableString {
+    fn from(value: &str) -> Self {
+        PeekableString::new(value)
+    }
+}
+
+impl From<&String> for PeekableString {
+    fn from(value: &String) -> Self {
+        PeekableString::new(value.as_str())
+    }
+}

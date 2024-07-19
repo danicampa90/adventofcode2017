@@ -1,7 +1,7 @@
 use std::{fmt::{Display, Debug}, str::FromStr};
 
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub struct Program{
     pub id: char
 }
